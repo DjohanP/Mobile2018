@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/angka1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bilangan Pertama"
+        android:inputType="numberDecimal|numberSigned"
+        />
+
+    <EditText
+        android:id="@+id/angka2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bilangan Kedua"
+        android:inputType="numberDecimal|numberSigned"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/plus"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/minus"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/divide"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="/" />
+
+        <Button
+            android:id="@+id/multiple"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="X" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset" />
+
+    <TextView
+        android:id="@+id/hasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
