@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
+            android:id="@+id/nav_cameraa"
             android:icon="@drawable/ic_menu_camera"
             android:title="Ambil Foto" />
         <item
-            android:id="@+id/nav_third_fragment"
+            android:id="@+id/nav_database"
             android:icon="@drawable/ic_data_usage_black_24dp"
             android:title="Database" />
         <item
-            android:id="@+id/nav_second_fragment"
+            android:id="@+id/nav_prediksi"
             android:icon="@drawable/ic_send_black_24dp"
             android:title="Prediksi" />
     </group>

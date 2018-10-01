@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity2 extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class MainActivity2 extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
 
         nvDrawer=(NavigationView)findViewById(R.id.nvView);
-
+        setupDrawerContent(nvDrawer);
     }
 
     @Override
@@ -81,21 +82,23 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        //Toast.makeText(this,"Camera",Toast.LENGTH_LONG).show();
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
         switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                fragmentClass = FirstFragment.class;
+            case R.id.nav_cameraa:
+                fragmentClass = CameraFragment.class;
+                //Toast.makeText(this,"Camera",Toast.LENGTH_LONG).show();
                 break;
-            case R.id.nav_second_fragment:
-                fragmentClass = FirstFragment.class;
+            case R.id.nav_database:
+                fragmentClass = DatabaseFragment.class;
                 break;
-            case R.id.nav_third_fragment:
-                fragmentClass = FirstFragment.class;
+            case R.id.nav_prediksi:
+                fragmentClass = PrediksiFragment.class;
                 break;
             default:
-                fragmentClass = FirstFragment.class;
+                fragmentClass = CameraFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
