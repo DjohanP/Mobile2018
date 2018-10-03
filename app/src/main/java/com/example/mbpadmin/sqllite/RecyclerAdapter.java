@@ -86,7 +86,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             Fragment mFragment=new FotoFragment();
 
-            Intent intent = new Intent(context,CameraActivity.class);
+            Intent intent = new Intent(context,CameraActivity2.class);
 
             Bundle extras = new Bundle();
             extras.putInt("position",getAdapterPosition());

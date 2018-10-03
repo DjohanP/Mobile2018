@@ -21,7 +21,7 @@ public interface FotooDao {
     @Query("DELETE FROM fotoo")
     void deleteAll();
 
-    @Query("SELECT * FROM fotoo WHERE judul LIKE :search "+" LIMIT 1")
+    @Query("SELECT * FROM fotoo WHERE judul LIKE :search "+" ORDER BY id DESC LIMIT 1")
     public List<FotooEntity> findCaptionWithJudul(String search);
 
 }

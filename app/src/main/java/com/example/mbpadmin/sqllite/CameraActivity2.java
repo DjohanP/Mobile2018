@@ -38,29 +38,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.xml.datatype.Duration;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
-public class CameraActivity  extends AppCompatActivity{
-
+public class CameraActivity2 extends AppCompatActivity {
     private String judul;
     private String nrp;
-    private int counter;
-    DatabaseHelper helper;
+    private int counter=0;
     private List<String> listPathFile;
     private ArrayList<String> encodedImagesList;
     private TextView tvHint;
-    protected SweetAlertDialog loadingDialog, errorDialog, successDialog;
+    private CameraKitEventListener cameraListener;
+    private CameraView camerad;
+    private Button btnCapture;
     private static String BASE_DIR = "camtest/";
     protected static String UPLOAD_URL = "http://mobile.if.its.ac.id/kirimgambar";
     private int requestCounter = 0;
-    private CameraKitEventListener cameraListener;
     private boolean hasRequestFailed = false;
-    private CameraView camerad;
-    private Button btnCapture;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,30 +87,34 @@ public class CameraActivity  extends AppCompatActivity{
                     outStream.flush();
                     outStream.close();
 
-                    counter++;
-                    if (counter >=1) {
-                       // showLoadingDialog();
+                    //counter++;
+                    //if (counter >=1) {
+                        //showLoadingDialog();
                         //getEncodedImage();
 //                        closeLoadingDialog();
 //                        showSuccessDialog();
-                        if (getEncodedImage()) {
-                            uploadFIle();
-                            Log.d("Foto","benar");
-                            closeLoadingDialog();
-                            showSuccessDialog();
-                        }
-                        else
-                        {
-                            Log.d("Foto","salah");
-                        }
+                    if (getEncodedImage()) {
+                        uploadFIle();
+                        Log.d("Foto","benar");
+                      //  closeLoadingDialog();
+                        //showSuccessDialog();
                     }
+                    else
+                    {
+                        Log.d("Foto","salah");
+                    }
+                    //}
                     //}
                     //else showHintDialog();
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    Log.d("Eroorr","TRY AWAL");
+                    Toast.makeText(CameraActivity2.this,"TRY AWAL",Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.d("Eroorr","TRY AWAL2");
+                    Toast.makeText(CameraActivity2.this,"TRY AWAL2",Toast.LENGTH_SHORT).show();
                 } finally {
 
                 }
@@ -135,15 +132,40 @@ public class CameraActivity  extends AppCompatActivity{
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //camerad.captureImage();
+                long lStartTime = System.nanoTime();
                 FotooEntity fotooEntity=new FotooEntity();
                 fotooEntity.setJudul(judul);
                 fotooEntity.setFoto("wkwkwk");
-                fotooEntity.setWaktu("500");
-                MainActivity2.appDatabase.fotooDao().addFotoo(fotooEntity);
+                /*List<FotooEntity> fotooEntityList=MainActivity2.appDatabase.fotooDao().findCaptionWithJudul(judul);
+                String hsl;
+                if(fotooEntityList.isEmpty())
+                {
+                    hsl="Ya Tidak Ada";
+                    Log.d("Hasilnyawkwkw","Kosong");
+                }
+                else
+                {
+                    hsl="Ya Ada";
+                    Log.d("Hasilnyawkwkw","Ada");
+                    String waktu="";
+                    for(FotooEntity fotoo:fotooEntityList)
+                    {
+                        waktu=fotoo.getWaktu();
+                    }
+                }
+                Toast.makeText(CameraActivity2.this,hsl,Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(CameraActivity2.this,"Upload",Toast.LENGTH_SHORT).show();
                 camerad.captureImage();
+                long lEndTime = System.nanoTime();
+                long output = lEndTime - lStartTime;
+                double seconds = (double)output / 1000000000.0;
+                String outs=String.valueOf(seconds);
+                fotooEntity.setWaktu(outs);
+                MainActivity2.appDatabase.fotooDao().addFotoo(fotooEntity);
+                Toast.makeText(CameraActivity2.this,"Selesai Upload "+outs+" s",Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -154,13 +176,13 @@ public class CameraActivity  extends AppCompatActivity{
 
     @Override
     protected void onPause() {
-        camerad.stop();
         super.onPause();
+        camerad.stop();
     }
 
     protected void init() {
         judul = this.getIntent().getStringExtra("Judul");
-        nrp="05111540000067";
+        nrp="0511125";
         //nrp="43";
         counter=this.getIntent().getIntExtra("position",0);
         listPathFile = new ArrayList<>();
@@ -169,41 +191,6 @@ public class CameraActivity  extends AppCompatActivity{
         tvHint.setText(judul);
         //Log.d("Judul",judul);
         //showHintDialog();
-    }
-
-    protected void showHintDialog() {
-        tvHint.setText(judul);
-        new SweetAlertDialog(this)
-                .setTitleText("Hint:")
-                .setContentText(judul)
-                .show();
-    }
-
-    protected void showLoadingDialog() {
-        loadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        loadingDialog.setTitleText("Uploading Images");
-        loadingDialog.setCancelable(false);
-        loadingDialog.show();
-    }
-
-    protected boolean getEncodedImage() {
-        loadingDialog.setTitleText("Encoding images");
-
-        Bitmap image;
-        ByteArrayOutputStream baos;
-        byte[] byteArrayImage;
-        String image_base64;
-
-        for (String imagepath : listPathFile) {
-            image = BitmapFactory.decodeFile(imagepath);
-            baos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-            byteArrayImage = baos.toByteArray();
-            image_base64 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-            encodedImagesList.add(image_base64);
-        }
-
-        return true;
     }
 
     protected File getOutputMediaFile(int type) {
@@ -233,12 +220,29 @@ public class CameraActivity  extends AppCompatActivity{
         return mediaFile;
     }
 
-    protected void uploadFIle() {
-        SimpleDateFormat sdf=new SimpleDateFormat("S");
-        Calendar cal=Calendar.getInstance();
-        String sebelum = sdf.format(cal.getTimeInMillis());
+    protected boolean getEncodedImage() {
+        //loadingDialog.setTitleText("Encoding images");
 
-        loadingDialog.setTitleText("Uploading images");
+        Bitmap image;
+        ByteArrayOutputStream baos;
+        byte[] byteArrayImage;
+        String image_base64;
+
+        for (String imagepath : listPathFile) {
+            image = BitmapFactory.decodeFile(imagepath);
+            baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byteArrayImage = baos.toByteArray();
+            image_base64 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+            encodedImagesList.add(image_base64);
+        }
+
+        return true;
+    }
+
+    protected void uploadFIle() {
+        Log.d("Oke?","?");
+        //loadingDialog.setTitleText("Uploading images");
         StringRequest stringRequest;
         stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
                 new Response.Listener<String>() {
@@ -249,7 +253,9 @@ public class CameraActivity  extends AppCompatActivity{
                         if (requestCounter == 0 && !hasRequestFailed) {
                             //closeLoadingDialog();
                             //showSuccessDialog();
+                            Toast.makeText(CameraActivity2.this,"Sukses Upload",Toast.LENGTH_SHORT).show();
                         }
+                        Toast.makeText(CameraActivity2.this,"Sukses Upload",Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -258,19 +264,19 @@ public class CameraActivity  extends AppCompatActivity{
                         hasRequestFailed = true;
 
                         //Showing toast
-                        Toast.makeText(CameraActivity.this, "erorrnya ini"+volleyError.getMessage(),
+                        Toast.makeText(CameraActivity2.this, "erorrnya ini" + volleyError.getMessage(),
                                 Toast.LENGTH_LONG).show();
-                        closeLoadingDialog();
-                        showSuccessDialog();
+                        //closeLoadingDialog();
+                        //showSuccessDialog();
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 // Get encoded Image
                 String image = encodedImagesList.get(0);
                 Map<String, String> params = new HashMap<>();
                 // Adding parameters
-                params.put("image", "data:image/jpeg;base64,"+image);
+                params.put("image", "data:image/jpeg;base64," + image);
                 params.put("nrp", nrp);
 
                 //returning parameters
@@ -278,84 +284,5 @@ public class CameraActivity  extends AppCompatActivity{
             }
         };
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-        Calendar cal2=Calendar.getInstance();
-        String saatini = sdf.format(cal.getTimeInMillis());
-        long selisih=Long.parseLong(saatini)-Long.parseLong(sebelum);
-        String selisihnya=String.valueOf(selisih);
-        Log.d("Selisih",selisihnya);
-        helper = new DatabaseHelper(this);
-        helper.updateARow(judul,"1","0.01");
-
-//        StringRequest stringRequest;
-//        //for (int i = 0; i < encodedImagesList.size(); i++) {
-//            //final int index = i;
-//
-//        SimpleDateFormat sdf=new SimpleDateFormat("S");
-//        Calendar cal=Calendar.getInstance();
-//        String sebelum = sdf.format(cal.getTimeInMillis());
-//        stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        closeLoadingDialog();
-//                        showSuccessDialog();
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        hasRequestFailed = true;
-//
-//                        //Showing toast
-//                        Toast.makeText(CameraActivity.this, "erorrnya ini"+volleyError.getMessage(),
-//                                Toast.LENGTH_LONG).show();
-//                        closeLoadingDialog();
-//                        showSuccessDialog();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams(){
-//                // Get encoded Image
-//                String image = encodedImagesList.get(0);
-//                Map<String, String> params = new HashMap<>();
-//                // Adding parameters
-//                params.put("image", "data:image/jpeg;base64,"+image);
-//                params.put("nrp", nrp);
-//
-//                //returning parameters
-//                return params;
-//            }
-//        };
-//        //Adding request to the queue
-//        requestCounter++;
-//        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-//        //SimpleDateFormat saatini=new SimpleDateFormat("HH:mm:ss");
-//        //SimpleDateFormat sdf=new SimpleDateFormat("S");
-//        Calendar cal2=Calendar.getInstance();
-//        String saatini = sdf.format(cal.getTimeInMillis());
-//        long selisih=Long.parseLong(saatini)-Long.parseLong(sebelum);
-//        String selisihnya=String.valueOf(selisih);
-//
-//        helper = new DatabaseHelper(this);
-//        helper.updateARow(judul,"1","0.01");
-        //}
-    }
-
-    protected void closeLoadingDialog() {
-        loadingDialog.cancel();
-    }
-
-    protected void showSuccessDialog() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Success!")
-                .setContentText("Images uploaded successfully")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        finish();
-                    }
-                })
-                .show();
     }
 }

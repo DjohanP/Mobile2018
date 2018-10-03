@@ -25,13 +25,14 @@ public class CameraFragment extends Fragment {
     //private CameraItemBinding mBinding;
     //private TextView textView;
     private RecyclerView recyclerView;
+    List<Foto> dbList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
         View view=inflater.inflate(R.layout.camera_itemku,container,false );
-        List<Foto> dbList= new ArrayList<>();
+        dbList= new ArrayList<>();
 
         recyclerView=view.findViewById(R.id.recyclerviewku);
         recyclerView.setHasFixedSize(true);
@@ -48,12 +49,12 @@ public class CameraFragment extends Fragment {
         }
         //Log.d("Foto Baru",dbList.toString());
         recyclerView.setAdapter(new RecyclerAdapter(getContext(), dbList));
-        MainActivity2.appDatabase.fotooDao().deleteAll();
+        /*MainActivity2.appDatabase.fotooDao().deleteAll();
         FotooEntity fotooEntity=new FotooEntity();
         fotooEntity.setJudul(CAPTION[0]);
         fotooEntity.setFoto("wkwkwk");
         fotooEntity.setWaktu("500");
-        MainActivity2.appDatabase.fotooDao().addFotoo(fotooEntity);
+        MainActivity2.appDatabase.fotooDao().addFotoo(fotooEntity);*/
 
 
         //mBinding=DataBindingUtil.inflate(inflater,R.layout.camera_item2,container,false);
@@ -97,5 +98,12 @@ public class CameraFragment extends Fragment {
             textView.setText(info);
         }*/
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Balik","INi");
+        recyclerView.setAdapter(new RecyclerAdapter(getContext(), dbList));
     }
 }
