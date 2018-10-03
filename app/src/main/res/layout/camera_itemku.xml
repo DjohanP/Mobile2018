@@ -5,16 +5,12 @@
 
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Camera"-->
-        <!--android:textSize="100sp"/>-->
-
-    <ListView
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/displaynya"/>-->
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_camera">
-
-    </ListView>
+        android:id="@+id/recyclerviewku"
+        android:scrollbars="vertical"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

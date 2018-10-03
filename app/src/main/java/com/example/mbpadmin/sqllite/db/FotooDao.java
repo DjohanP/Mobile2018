@@ -10,8 +10,18 @@ import java.util.List;
 @Dao
 public interface FotooDao {
     @Query("SELECT * FROM fotoo")
-    List<Fotoo> getAll();
+    List<FotooEntity> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<FotooEntity> fotoo);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addFotoo(FotooEntity fotooEntity);
+
+    @Query("DELETE FROM fotoo")
+    void deleteAll();
+
+    @Query("SELECT * FROM fotoo WHERE judul LIKE :search "+" LIMIT 1")
+    public List<FotooEntity> findCaptionWithJudul(String search);
+
 }

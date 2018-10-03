@@ -3,6 +3,7 @@ package com.example.mbpadmin.sqllite;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mbpadmin.sqllite.Item.Foto;
+import com.example.mbpadmin.sqllite.db.FotooEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +43,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
-//        Log.d("Foto",dbList.get(position).getFoto());
-        if(dbList.get(position).getFoto()==null)
+        List<FotooEntity> fotooEntityList=MainActivity2.appDatabase.fotooDao().findCaptionWithJudul(dbList.get(position).getJudul());
+        if(fotooEntityList.isEmpty())
         {
+            Log.d("Hasilnyawkwkw","Kosong");
             holder.judul.setText(dbList.get(position).getJudul()+" (Belum)");
+            holder.kecepatan.setText(dbList.get(position).getWaktu()+" s");
         }
         else
         {
+            Log.d("Hasilnyawkwkw","Ada");
             holder.judul.setText(dbList.get(position).getJudul()+" (Sudah)");
+            String waktu="";
+            for(FotooEntity fotoo:fotooEntityList)
+            {
+                waktu=fotoo.getWaktu();
+            }
+            holder.kecepatan.setText(waktu+" s");
         }
-        holder.kecepatan.setText(dbList.get(position).getWaktu()+" s");
-
+        //Log.d("Foto",dbList.get(position).getFoto());
     }
 
     @Override
@@ -73,6 +83,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
+
+            Fragment mFragment=new FotoFragment();
+
             Intent intent = new Intent(context,CameraActivity.class);
 
             Bundle extras = new Bundle();
@@ -82,9 +95,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             int i=getAdapterPosition();
             intent.putExtra("position", getAdapterPosition());
             //Log.d("Judul",dbList.get(getAdapterPosition()).getJudul());
-            intent.putExtra("Judul",dbList.get(getAdapterPosition()).getJudul());
+            intent.putExtra("Judul",dbList.get(getAdapterPosition()).getJudul()+"");
             context.startActivity(intent);
-            Toast.makeText(RecyclerAdapter.context, "you have clicked Row " + getAdapterPosition(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(RecyclerAdapter.context, "you have clicked Row " + getAdapterPosition(), Toast.LENGTH_LONG).show();
         }
     }
 }
