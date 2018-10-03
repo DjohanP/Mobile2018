@@ -84,7 +84,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         @Override
         public void onClick(View v) {
 
-            Fragment mFragment=new FotoFragment();
+            //Fragment mFragment=new FotoFragment();
 
             Intent intent = new Intent(context,CameraActivity2.class);
 
