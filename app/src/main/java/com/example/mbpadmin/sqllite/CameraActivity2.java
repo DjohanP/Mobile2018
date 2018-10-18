@@ -51,7 +51,7 @@ public class CameraActivity2 extends AppCompatActivity {
     private CameraView camerad;
     private Button btnCapture;
     private static String BASE_DIR = "camtest/";
-    protected static String UPLOAD_URL = "http://mobile.if.its.ac.id/kirimgambar";
+    protected static String UPLOAD_URL = "http://app.if.its.ac.id/sendImg";
     private int requestCounter = 0;
     private boolean hasRequestFailed = false;
 
@@ -182,7 +182,7 @@ public class CameraActivity2 extends AppCompatActivity {
 
     protected void init() {
         judul = this.getIntent().getStringExtra("Judul");
-        nrp="0511125";
+        nrp="05111540000067";
         //nrp="43";
         counter=this.getIntent().getIntExtra("position",0);
         listPathFile = new ArrayList<>();
@@ -276,7 +276,8 @@ public class CameraActivity2 extends AppCompatActivity {
                 String image = encodedImagesList.get(0);
                 Map<String, String> params = new HashMap<>();
                 // Adding parameters
-                params.put("image", "data:image/jpeg;base64," + image);
+                //params.put("imagefile", "data:image/jpeg;base64," + image);
+                params.put("image", "data:image/jpeg;base64,"+image);
                 params.put("nrp", nrp);
 
                 //returning parameters
