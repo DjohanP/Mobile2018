@@ -69,6 +69,7 @@ public class PrediksiFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
+        getActivity().setTitle("Prediksi");
         View view=inflater.inflate(R.layout.activity_predict,container,false );
         init();
         cameraListener=new CameraKitEventListener() {

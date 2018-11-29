@@ -13,5 +13,9 @@
             android:id="@+id/nav_prediksi"
             android:icon="@drawable/ic_send_black_24dp"
             android:title="Prediksi" />
+        <item
+            android:id="@+id/nav_scan"
+            android:icon="@drawable/ic_send_black_24dp"
+            android:title="Scan" />
     </group>
 </menu>

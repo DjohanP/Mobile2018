@@ -41,7 +41,6 @@ public class MainActivity2 extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
         toolbar=(Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,6 +51,7 @@ public class MainActivity2 extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
 
         nvDrawer=(NavigationView)findViewById(R.id.nvView);
+
         setupDrawerContent(nvDrawer);
         requestWriteStoragePermission();
         Class fragmentClass;
@@ -125,6 +125,9 @@ public class MainActivity2 extends AppCompatActivity {
             case R.id.nav_prediksi:
                 fragmentClass = PrediksiFragment.class;
                 break;
+            case R.id.nav_scan:
+                fragmentClass=ScanFragment.class;
+                break;
             default:
                 fragmentClass = CameraFragment.class;
         }
@@ -135,11 +138,11 @@ public class MainActivity2 extends AppCompatActivity {
         }
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
         // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
+        //menuItem.setChecked(true);
         // Set action bar title
-        setTitle(menuItem.getTitle());
+        //setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }
@@ -149,7 +152,9 @@ public class MainActivity2 extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             String[] permissions = new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.INTERNET
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
             };
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(permissions, 2);
