@@ -41,6 +41,8 @@ public class ScanFragment extends Fragment implements ZXingScannerView.ResultHan
     private LocationListener locationListener;
     private double lat;
     private double lng;
+    private double latKelas=0,lngKelas=0;
+    private String idAgenda="";
 
     @Nullable
     @Override
@@ -169,9 +171,70 @@ public class ScanFragment extends Fragment implements ZXingScannerView.ResultHan
         Log.v("TAG", rawResult.getBarcodeFormat().toString());
         String resultScan=rawResult.getText();
         String[] split=resultScan.split(",");
-        double latKelas=0,lngKelas=0;
-        latKelas = Double.parseDouble(split[0]);
-        lngKelas=Double.parseDouble(split[1]);
+
+        try
+        {
+            latKelas = Double.parseDouble(split[0]);
+        }
+        catch (Exception e)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Erorr Scan");
+            builder.setMessage("Silahkan Melakukan Scan QrCode yang Benar");
+            //builder.setMessage(rawResult.getText());
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mScannerView.resumeCameraPreview(ScanFragment.this);
+                }
+            });
+
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            return;
+        }
+        try {
+            lngKelas=Double.parseDouble(split[1]);
+        }
+        catch (Exception e)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Erorr Scan");
+            builder.setMessage("Silahkan Melakukan Scan QrCode yang Benar");
+            //builder.setMessage(rawResult.getText());
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mScannerView.resumeCameraPreview(ScanFragment.this);
+                }
+            });
+
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            return;
+        }
+        try{
+            idAgenda=String.valueOf(split[2]);
+        }
+        catch (Exception e)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Erorr Scan");
+            builder.setMessage("Silahkan Melakukan Scan QrCode yang Benar");
+            //builder.setMessage(rawResult.getText());
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mScannerView.resumeCameraPreview(ScanFragment.this);
+                }
+            });
+
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            return;
+        }
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Scan Result");
         if(lat==0||lng==0)
@@ -192,13 +255,33 @@ public class ScanFragment extends Fragment implements ZXingScannerView.ResultHan
         {
             float[] results = new float[1];
             Location.distanceBetween(latKelas,lngKelas,lat,lng,results);
-            if(results[0]<=15)
+            if(results[0]<=100)
             {
-                builder.setMessage("Anda boleh absen karena lokasi anda kurang dari sama dengan 15 Meter");
+                builder.setMessage("Anda boleh absen karena lokasi anda kurang dari sama dengan 15 Meter"+idAgenda);
                 builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mScannerView.resumeCameraPreview(ScanFragment.this);
+                        //mScannerView.resumeCameraPreview(ScanFragment.this);
+                        Fragment fragment= null;
+                        try {
+                            fragment = (Fragment) PrediksiFragment.class.newInstance();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (java.lang.InstantiationException e) {
+                            e.printStackTrace();
+                        }
+
+                        Bundle extras = new Bundle();
+                        extras.putDouble("latCurrent",lat);
+                        extras.putDouble("lngCurrent",lng);
+                        extras.putDouble("latKelas",latKelas);
+                        extras.putDouble("lngKelas",lngKelas);
+                        extras.putString("idAgenda",idAgenda);
+
+                        fragment.setArguments(extras);
+
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
                     }
                 });
 
@@ -220,8 +303,12 @@ public class ScanFragment extends Fragment implements ZXingScannerView.ResultHan
                 alert1.show();
                 return;
             }
-
+            //builder.setMessage("Jarak : "+String.valueOf(results[0])+"\nLatitude : "+String.valueOf(latKelas)+"Longitude : "+String.valueOf(lngKelas)+"\nLatitude : "+String.valueOf(lat)+" Longitude"+String.valueOf(lng));
         }
+        //builder.setMessage(rawResult.getText());
+
+
+        //mScannerView.resumeCameraPreview(this);
     }
 
 }

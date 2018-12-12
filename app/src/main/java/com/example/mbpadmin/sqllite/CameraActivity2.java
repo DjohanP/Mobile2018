@@ -51,7 +51,7 @@ public class CameraActivity2 extends AppCompatActivity {
     private CameraView camerad;
     private Button btnCapture;
     private static String BASE_DIR = "camtest/";
-    protected static String UPLOAD_URL = "http://app.if.its.ac.id/sendImg";
+    protected static String UPLOAD_URL = "http://etc.if.its.ac.id/sendImg/";
     private int requestCounter = 0;
     private boolean hasRequestFailed = false;
 
@@ -253,9 +253,9 @@ public class CameraActivity2 extends AppCompatActivity {
                         if (requestCounter == 0 && !hasRequestFailed) {
                             //closeLoadingDialog();
                             //showSuccessDialog();
-                            Toast.makeText(CameraActivity2.this,"Sukses Upload",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CameraActivity2.this,"Sukses Upload"+response,Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(CameraActivity2.this,"Sukses Upload",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraActivity2.this,"Sukses Upload"+response,Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -278,7 +278,8 @@ public class CameraActivity2 extends AppCompatActivity {
                 // Adding parameters
                 //params.put("imagefile", "data:image/jpeg;base64," + image);
                 params.put("image", "data:image/jpeg;base64,"+image);
-                params.put("nrp", nrp);
+                params.put("idUser", nrp);
+                params.put("password","123456");
 
                 //returning parameters
                 return params;

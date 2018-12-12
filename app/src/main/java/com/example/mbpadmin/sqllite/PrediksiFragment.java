@@ -60,10 +60,14 @@ public class PrediksiFragment extends Fragment {
     private CameraView camerad;
     private Button btnCapture;
     private static String BASE_DIR = "camtest/";
-    protected static String PREDICT_URL = "http://mobile.if.its.ac.id/predict";
+    protected static String PREDICT_URL = "http://etc.if.its.ac.id/signin/";
     private int requestCounter = 0;
     private boolean hasRequestFailed = false;
     private String res="";
+    private double latKelas=0,lngKelas=0;
+    private double lat,lng;
+    private String idAgenda="";
+    private String password;
 
     @Nullable
     @Override
@@ -166,7 +170,14 @@ public class PrediksiFragment extends Fragment {
     }
 
     protected void init() {
-        nrp="051115400000076";
+        nrp="05111540000067";
+        password="123456";
+        latKelas=this.getArguments().getDouble("latKelas");
+        lngKelas=this.getArguments().getDouble("lngKelas");
+        lat=this.getArguments().getDouble("latCurrent");
+        lng=this.getArguments().getDouble("lngCurrent");
+        idAgenda=getArguments().getString("idAgenda");
+
         encodedImagesList = new ArrayList<>();
         listPathFile = new ArrayList<>();
     }
@@ -254,8 +265,15 @@ public class PrediksiFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // Adding parameters
                 //params.put("imagefile", "data:image/jpeg;base64,"+image);
-                params.put("imagefile",image);
+                params.put("idUser",nrp);
+                params.put("password",password);
+                params.put("image","data:image/jpeg;base64,"+image);
                 params.put("nrp", nrp);
+                params.put("Lat",String.valueOf(latKelas));
+                params.put("Lon",String.valueOf(lngKelas));
+                params.put("idAgenda",String.valueOf(idAgenda));
+
+
                 Log.d("Kirim Sesuatu",image);
 
                 //returning parameters
