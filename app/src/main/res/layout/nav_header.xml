@@ -3,9 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@color/cardview_shadow_end_color"
+    android:background="@drawable/plaza"
     android:gravity="bottom"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mobile 2018"
+        android:textSize="25dp"
+        android:layout_gravity="bottom"/>
 </LinearLayout>
