@@ -13,6 +13,11 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="PrimaryButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/main_green_color</item>
+    </style>
     <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">-->
         <!--<item name="android:textColorPrimary">TITLE_COLOR_GOES_HERE</item>-->
         <!--<item name="android:textColorSecondary">SUBTITLE_COLOR_GOES_HERE</item>-->

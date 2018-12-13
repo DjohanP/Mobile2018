@@ -122,8 +122,11 @@ public class MainActivity2 extends AppCompatActivity {
             case R.id.nav_database:
                 fragmentClass = DatabaseFragment.class;
                 break;
-            case R.id.nav_prediksi:
-                fragmentClass = PrediksiFragment.class;
+            case R.id.nav_predict:
+                fragmentClass = PrediksiFragment2.class;
+                break;
+            case R.id.nav_train:
+                fragmentClass=TrainFragment.class;
                 break;
             case R.id.nav_scan:
                 fragmentClass=ScanFragment.class;

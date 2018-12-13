@@ -7,12 +7,14 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +70,7 @@ public class PrediksiFragment extends Fragment {
     private double lat,lng;
     private String idAgenda="";
     private String password;
+    private EditText etNRP,etPassword;
 
     @Nullable
     @Override
@@ -76,6 +79,9 @@ public class PrediksiFragment extends Fragment {
         getActivity().setTitle("Prediksi");
         View view=inflater.inflate(R.layout.activity_predict,container,false );
         init();
+        etNRP=(EditText) view.findViewById(R.id.nrpPrediksi);
+        etPassword=(EditText)view.findViewById(R.id.passwordMhsPrediksi);
+
         cameraListener=new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -147,6 +153,24 @@ public class PrediksiFragment extends Fragment {
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int checkError=0;
+                if(TextUtils.isEmpty(etNRP.getText().toString()))
+                {
+                    etNRP.setError("NRP Wajib Diisi");
+                    checkError=1;
+                }
+                if(TextUtils.isEmpty(etPassword.getText().toString()))
+                {
+                    etPassword.setError("Password Wajib Diisi");
+                    checkError=1;
+                }
+                if(checkError==1)
+                {
+                    return;
+                }
+                nrp=etNRP.getText().toString();
+                password=etPassword.getText().toString();
                 //Toast.makeText(getContext(),"Klik Ini",Toast.LENGTH_SHORT).show();
                 camerad.captureImage();
                 //RequestQueue requestQueue=Volley.newRequestQueue(getContext());
@@ -170,8 +194,8 @@ public class PrediksiFragment extends Fragment {
     }
 
     protected void init() {
-        nrp="05111540000067";
-        password="123456";
+        //nrp="05111540000067";
+        //password="123456";
         latKelas=this.getArguments().getDouble("latKelas");
         lngKelas=this.getArguments().getDouble("lngKelas");
         lat=this.getArguments().getDouble("latCurrent");

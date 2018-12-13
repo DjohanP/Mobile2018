@@ -10,12 +10,21 @@
             android:icon="@drawable/ic_data_usage_black_24dp"
             android:title="Database" />
         <item
-            android:id="@+id/nav_prediksi"
-            android:icon="@drawable/ic_send_black_24dp"
-            android:title="Prediksi" />
+            android:id="@+id/nav_train"
+            android:icon="@drawable/ic_loop_black_24dp"
+            android:title="Train" />
+        <item
+            android:id="@+id/nav_predict"
+            android:icon="@drawable/ic_check_circle_black_24dp"
+            android:title="Predict" />
+
+        <!--<item-->
+            <!--android:id="@+id/nav_prediksi"-->
+            <!--android:icon="@drawable/ic_send_black_24dp"-->
+            <!--android:title="Prediksi" />-->
         <item
             android:id="@+id/nav_scan"
             android:icon="@drawable/ic_send_black_24dp"
-            android:title="Scan" />
+            android:title="Absen" />
     </group>
 </menu>

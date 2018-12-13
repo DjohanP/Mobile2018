@@ -8,18 +8,6 @@
     tools:context=".CameraActivity"
     android:orientation="vertical">
 
-    <com.wonderkiln.camerakit.CameraView
-        android:layout_marginTop="36dp"
-        android:id="@+id/camerad"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:layout_gravity="center_horizontal"
-        app:ckFacing="front"
-        app:ckFlash="off"
-        app:ckFocus="continuous"
-        app:ckCropOutput="true"
-        app:ckZoom="off"/>
-
     <TextView
         android:id="@+id/tvHint"
         android:layout_width="256dp"
@@ -36,7 +24,7 @@
         android:layout_gravity="center_horizontal">
 
         <EditText
-            android:id="@+id/nrpPrediksi"
+            android:id="@+id/nrptrain"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -50,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
         <EditText
-            android:id="@+id/passwordMhsPrediksi"
+            android:id="@+id/passwordMhstrain"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -59,22 +47,13 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_capture"
+        android:id="@+id/btn_train"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Capture"
+        android:text="Train"
         android:textSize="20sp"
         android:theme="@style/PrimaryButton"/>
-
-    <TextView
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:text="HINT: Penuhi frame camera dengan wajah Anda untuk akurasi maksimal"/>
 
 
 </LinearLayout>

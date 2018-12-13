@@ -4,22 +4,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.mbpadmin.sqllite.db.FotooEntity;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -32,9 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,30 +42,35 @@ import java.util.Random;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
-public class CameraActivity2 extends AppCompatActivity {
-    private String judul;
+public class PrediksiFragment2 extends Fragment {
     private String nrp;
     private String password;
-    private int counter=0;
+    private EditText etNRP,etPassword;
+    protected static String PREDICT_URL = "http://etc.if.its.ac.id/doPredict/";
     private List<String> listPathFile;
     private ArrayList<String> encodedImagesList;
-    private TextView tvHint;
+    private static String BASE_DIR = "camtest/";
+    private int counter=0;
+    private int requestCounter = 0;
+    private boolean hasRequestFailed = false;
     private CameraKitEventListener cameraListener;
     private CameraView camerad;
     private Button btnCapture;
-    private static String BASE_DIR = "camtest/";
-    protected static String UPLOAD_URL = "http://etc.if.its.ac.id/sendImg/";
-    private int requestCounter = 0;
-    private boolean hasRequestFailed = false;
-    private EditText etNRP,etPassword;
 
+
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
-        etNRP=(EditText) findViewById(R.id.nrp);
-        etPassword=(EditText)findViewById(R.id.passwordMhs);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Prediksi");
+        View view=inflater.inflate(R.layout.activity_predict,container,false );
         init();
+        etNRP=(EditText) view.findViewById(R.id.nrpPrediksi);
+        etPassword=(EditText)view.findViewById(R.id.passwordMhsPrediksi);
+
+        NavigationView nvDrawer=(NavigationView) getActivity().findViewById(R.id.nvView);
+        nvDrawer.setCheckedItem(R.id.nav_predict);
+
         cameraListener=new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -95,14 +100,14 @@ public class CameraActivity2 extends AppCompatActivity {
 
                     //counter++;
                     //if (counter >=1) {
-                        //showLoadingDialog();
-                        //getEncodedImage();
+                    //showLoadingDialog();
+                    //getEncodedImage();
 //                        closeLoadingDialog();
 //                        showSuccessDialog();
                     if (getEncodedImage()) {
-                        uploadFIle();
+                        postData();
                         Log.d("Foto","benar");
-                      //  closeLoadingDialog();
+                        //  closeLoadingDialog();
                         //showSuccessDialog();
                     }
                     else
@@ -116,28 +121,28 @@ public class CameraActivity2 extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Log.d("Eroorr","TRY AWAL");
-                    Toast.makeText(CameraActivity2.this,"TRY AWAL",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"TRY AWAL",Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.d("Eroorr","TRY AWAL2");
-                    Toast.makeText(CameraActivity2.this,"TRY AWAL2",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"TRY AWAL2",Toast.LENGTH_SHORT).show();
                 } finally {
 
                 }
             }
-
             @Override
             public void onVideo(CameraKitVideo cameraKitVideo) {
 
             }
         };
-        camerad = (CameraView) findViewById(R.id.camerad);
+        camerad = (CameraView)view.findViewById(R.id.camerad);
         camerad.addCameraKitListener(cameraListener);
 
-        btnCapture = (Button) findViewById(R.id.btn_capture);
+        btnCapture = (Button)view.findViewById(R.id.btn_capture);
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+
                 int checkError=0;
                 if(TextUtils.isEmpty(etNRP.getText().toString()))
                 {
@@ -155,66 +160,32 @@ public class CameraActivity2 extends AppCompatActivity {
                 }
                 nrp=etNRP.getText().toString();
                 password=etPassword.getText().toString();
-                //Toast.makeText(CameraActivity2.this,nrp+" "+password,Toast.LENGTH_LONG).show();
-                //camerad.captureImage();
-                long lStartTime = System.nanoTime();
-                FotooEntity fotooEntity=new FotooEntity();
-                fotooEntity.setJudul(judul);
-                fotooEntity.setFoto("wkwkwk");
-                /*List<FotooEntity> fotooEntityList=MainActivity2.appDatabase.fotooDao().findCaptionWithJudul(judul);
-                String hsl;
-                if(fotooEntityList.isEmpty())
-                {
-                    hsl="Ya Tidak Ada";
-                    Log.d("Hasilnyawkwkw","Kosong");
-                }
-                else
-                {
-                    hsl="Ya Ada";
-                    Log.d("Hasilnyawkwkw","Ada");
-                    String waktu="";
-                    for(FotooEntity fotoo:fotooEntityList)
-                    {
-                        waktu=fotoo.getWaktu();
-                    }
-                }
-                Toast.makeText(CameraActivity2.this,hsl,Toast.LENGTH_SHORT).show();*/
-                Toast.makeText(CameraActivity2.this,"Upload",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"Klik Ini",Toast.LENGTH_SHORT).show();
                 camerad.captureImage();
-                long lEndTime = System.nanoTime();
-                long output = lEndTime - lStartTime;
-                double seconds = (double)output / 1000000000.0;
-                String outs=String.valueOf(seconds);
-                fotooEntity.setWaktu(outs);
-                MainActivity2.appDatabase.fotooDao().addFotoo(fotooEntity);
-                Toast.makeText(CameraActivity2.this,"Selesai Upload "+outs+" s",Toast.LENGTH_SHORT).show();
+                //RequestQueue requestQueue=Volley.newRequestQueue(getContext());
+                //JsonObjectRequest jsonObjectRequest=new
             }
         });
+        return view;
+
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         camerad.start();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         camerad.stop();
     }
 
-    protected void init() {
-        judul = this.getIntent().getStringExtra("Judul");
-        //nrp="05111540000067";
-        //nrp="43";
-        counter=this.getIntent().getIntExtra("position",0);
-        listPathFile = new ArrayList<>();
+    public void init()
+    {
         encodedImagesList = new ArrayList<>();
-        tvHint = (TextView) findViewById(R.id.tvHint);
-        tvHint.setText(judul);
-        //Log.d("Judul",judul);
-        //showHintDialog();
+        listPathFile = new ArrayList<>();
     }
 
     protected File getOutputMediaFile(int type) {
@@ -264,32 +235,31 @@ public class CameraActivity2 extends AppCompatActivity {
         return true;
     }
 
-    protected void uploadFIle() {
-        Log.d("Oke?","?");
-        //loadingDialog.setTitleText("Uploading images");
+    public void postData(){
         StringRequest stringRequest;
-        stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
+        stringRequest = new StringRequest(Request.Method.POST, PREDICT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("Responnya Adalah",response);
                         requestCounter--;
 
-                        if (requestCounter == 0 && !hasRequestFailed) {
+                        /*if (requestCounter == 0 && !hasRequestFailed) {
                             //closeLoadingDialog();
                             //showSuccessDialog();
-                            Toast.makeText(CameraActivity2.this,"Sukses Upload"+response,Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(CameraActivity2.this,"Sukses Upload"+response,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Sukses Upload "+response,Toast.LENGTH_SHORT).show();
+                        }*/
+                        Toast.makeText(getContext(),"Sukses Upload "+response,Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         hasRequestFailed = true;
-
+                        //Log.e ("rediksi", new String(volleyError.networkResponse.data));
                         //Showing toast
-                        Toast.makeText(CameraActivity2.this, "erorrnya ini" + volleyError.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Error",
+                        //      Toast.LENGTH_LONG).show();
                         //closeLoadingDialog();
                         //showSuccessDialog();
                     }
@@ -300,16 +270,19 @@ public class CameraActivity2 extends AppCompatActivity {
                 String image = encodedImagesList.get(0);
                 Map<String, String> params = new HashMap<>();
                 // Adding parameters
-                //params.put("imagefile", "data:image/jpeg;base64," + image);
-                params.put("image", "data:image/jpeg;base64,"+image);
-                params.put("idUser", nrp);
-                //params.put("password","123456");
+                //params.put("imagefile", "data:image/jpeg;base64,"+image);
+                params.put("idUser",nrp);
                 params.put("password",password);
+                params.put("image","data:image/jpeg;base64,"+image);
+                params.put("nrp", nrp);
+
+
+                Log.d("Kirim Sesuatu",image);
 
                 //returning parameters
                 return params;
             }
         };
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 }
