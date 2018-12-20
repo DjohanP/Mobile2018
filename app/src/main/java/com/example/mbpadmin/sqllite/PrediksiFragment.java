@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -267,13 +268,42 @@ public class PrediksiFragment extends Fragment {
                             //showSuccessDialog();
                             Toast.makeText(getContext(),"Sukses Upload "+response,Toast.LENGTH_SHORT).show();
                         }*/
-                        Toast.makeText(getContext(),"Sukses Upload "+response,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"Sukses Upload "+response,Toast.LENGTH_SHORT).show();
+                        if(response.contains("ACCEPTED"))
+                        {
+                            Toast.makeText(getContext(),"Photo Accepted",Toast.LENGTH_SHORT).show();
+                            Fragment fragment= null;
+                            try {
+                                fragment = (Fragment) SignaturePredictAbsentFragment.class.newInstance();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (java.lang.InstantiationException e) {
+                                e.printStackTrace();
+                            }
+
+                            Bundle extras = new Bundle();
+                            extras.putDouble("latCurrent",lat);
+                            extras.putDouble("lngCurrent",lng);
+                            extras.putDouble("latKelas",latKelas);
+                            extras.putDouble("lngKelas",lngKelas);
+                            extras.putString("idAgenda",idAgenda);
+
+                            fragment.setArguments(extras);
+
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         hasRequestFailed = true;
+                        Toast.makeText(getContext(), "erorrnya ini" + volleyError.getMessage(),Toast.LENGTH_LONG).show();
                         //Log.e ("rediksi", new String(volleyError.networkResponse.data));
                         //Showing toast
                         //Toast.makeText(getContext(), "Error",

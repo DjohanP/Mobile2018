@@ -18,6 +18,12 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/main_green_color</item>
     </style>
+
+    <style name="DangerButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/red_btn_bg_color</item>
+        <item name="colorControlHighlight">@color/main_green_color</item>
+    </style>
+
     <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">-->
         <!--<item name="android:textColorPrimary">TITLE_COLOR_GOES_HERE</item>-->
         <!--<item name="android:textColorSecondary">SUBTITLE_COLOR_GOES_HERE</item>-->

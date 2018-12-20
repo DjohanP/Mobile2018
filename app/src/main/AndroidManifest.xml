@@ -29,9 +29,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".CalculatorActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
         <activity android:name=".CameraActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>

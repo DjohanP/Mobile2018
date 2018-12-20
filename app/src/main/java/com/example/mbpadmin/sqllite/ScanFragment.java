@@ -237,6 +237,8 @@ public class ScanFragment extends Fragment implements ZXingScannerView.ResultHan
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Scan Result");
+        lat=-7.279427;
+        lng=112.797567;
         if(lat==0||lng==0)
         {
             builder.setMessage("Silahkan menunggu beberapa detik aplikasi sedang melakukan sinkronasi lokasi");

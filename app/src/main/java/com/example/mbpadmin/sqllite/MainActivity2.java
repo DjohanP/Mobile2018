@@ -131,6 +131,16 @@ public class MainActivity2 extends AppCompatActivity {
             case R.id.nav_scan:
                 fragmentClass=ScanFragment.class;
                 break;
+            case R.id.nav_send_ttd:
+                fragmentClass=SignatureFragment.class;
+                break;
+            case R.id.nav_train_ttd:
+                fragmentClass=SignatureTrainFragment.class;
+                break;
+            case R.id.nav_predict_ttd:
+                fragmentClass=SignaturePredictFragment.class;
+                break;
+
             default:
                 fragmentClass = CameraFragment.class;
         }

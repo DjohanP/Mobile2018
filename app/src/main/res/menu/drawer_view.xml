@@ -8,23 +8,52 @@
         <item
             android:id="@+id/nav_database"
             android:icon="@drawable/ic_data_usage_black_24dp"
-            android:title="Database" />
+            android:title="Database Foto" />
         <item
             android:id="@+id/nav_train"
             android:icon="@drawable/ic_loop_black_24dp"
-            android:title="Train" />
+            android:title="Train Photo" />
         <item
             android:id="@+id/nav_predict"
             android:icon="@drawable/ic_check_circle_black_24dp"
-            android:title="Predict" />
+            android:title="Predict Photo" />
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <size
+                android:width="1dp"
+                android:height="1dp" />
+            <solid android:color="@android:color/black" />
+        </shape>
 
         <!--<item-->
             <!--android:id="@+id/nav_prediksi"-->
             <!--android:icon="@drawable/ic_send_black_24dp"-->
             <!--android:title="Prediksi" />-->
         <item
+            android:id="@+id/nav_send_ttd"
+            android:icon="@drawable/ic_create_black_24dp"
+            android:title="Send Signature" />
+        <item
+            android:id="@+id/nav_train_ttd"
+            android:icon="@drawable/ic_loop_black_24dp"
+            android:title="Train Signature" />
+
+
+        <item
+            android:id="@+id/nav_predict_ttd"
+            android:icon="@drawable/ic_check_circle_black_24dp"
+            android:title="Predict TTD" />
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <size
+                android:width="1dp"
+                android:height="1dp" />
+            <solid android:color="@android:color/black" />
+        </shape>
+
+        <item
             android:id="@+id/nav_scan"
             android:icon="@drawable/ic_send_black_24dp"
             android:title="Absen" />
+
     </group>
 </menu>
